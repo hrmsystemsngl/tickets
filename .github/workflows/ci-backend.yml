@@ -1,0 +1,34 @@
+name: Node.js Backend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Specify the Node.js version you're using
+
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps  # Use '--legacy-peer-deps' if dependencies have peer issues
+
+    - name: Run Lint
+      run: npm run lint  # Make sure you have a lint script in package.json
+
+    - name: Run Tests
+      run: npm test  # Ensure you have a test script in package.json
+
+    - name: Build Project
+      run: npm run build  # If you have build scripts for production

@@ -1,0 +1,30 @@
+name: Deploy Node.js Backend to Heroku
+
+on:
+  push:
+    branches:
+      - main  # Trigger deploy on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Log in to Heroku
+      uses: akshnz/heroku-cli-action@v1
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}  # Set your HEROKU_API_KEY as a secret in GitHub
+
+    - name: Deploy to Heroku
+      run: git push https://git.heroku.com/your-heroku-app-name.git HEAD:main
